@@ -203,6 +203,20 @@ class Client(object):
             else:
                 raise NoValidUrlKeyFound
 
+    def download_by_key(self, key, target, _format='xlsx'):
+        """Downloads a spreadsheet by a key.
+
+        :param key: Unique ID (key) of a spreadsheet
+        :param target:
+        :param _format:
+        """
+        url = 'https://docs.google.com/spreadsheets/u/2/d/{0}/export?' \
+            'format={1}&id={0}'.format(key, _format)
+        resp = self.session.get(url)
+
+        with open(target, 'wb') as fout:
+            fout.write(resp.read())
+
     def openall(self, title=None):
         """Opens all available spreadsheets,
            returning a list of a :class:`~gspread.Spreadsheet` instances.
