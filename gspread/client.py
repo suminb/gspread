@@ -212,10 +212,14 @@ class Client(object):
         """
         url = 'https://docs.google.com/spreadsheets/u/2/d/{0}/export?' \
             'format={1}&id={0}'.format(key, _format)
-        resp = self.session.get(url)
-
-        with open(target, 'wb') as fout:
-            fout.write(resp.read())
+        try:
+            resp = self.session.get(url)
+        except HTTPError:
+            # TODO: handle the error
+            pass
+        else:
+            with open(target, 'wb') as fout:
+                fout.write(resp.read())
 
     def openall(self, title=None):
         """Opens all available spreadsheets,
